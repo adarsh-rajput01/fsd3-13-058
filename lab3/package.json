@@ -4,7 +4,8 @@
   "description": "local host - url\r 127.0.0.1- ip address",
   "main": "prg1.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node prg3.js",
+    "dev": "nodemon prg3.js"
   },
   "keywords": [],
   "author": "",

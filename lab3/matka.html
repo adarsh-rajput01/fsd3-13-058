@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>मटका — The Clay Pot of India</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand: #E8DEC7;
+    --sand-deep: #DED0AE;
+    --clay: #9A4B28;
+    --clay-deep: #6E3018;
+    --terracotta: #BE5C2E;
+    --indigo: #223B4C;
+    --ink: #2B2118;
+    --cream: #F7F1E1;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--sand);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hi{
+    font-family: 'Noto Serif Devanagari', serif;
+  }
+
+  .display{
+    font-family: 'Fraunces', serif;
+  }
+
+  a{ color: inherit; }
+
+  /* ===== texture backdrop ===== */
+  .grain{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: radial-gradient(circle at 1px 1px, var(--ink) 1px, transparent 0);
+    background-size: 18px 18px;
+    z-index: 0;
+  }
+
+  .wrap{
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    padding: 88px 0 64px;
+    text-align: center;
+    position: relative;
+  }
+
+  .wheel{
+    width: 190px;
+    height: 190px;
+    margin: 0 auto 40px;
+    animation: spin 26s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .wheel{ animation: none; }
+  }
+
+  @keyframes spin{
+    from{ transform: rotate(0deg); }
+    to{ transform: rotate(360deg); }
+  }
+
+  .hero h1{
+    font-size: clamp(64px, 13vw, 118px);
+    margin: 0;
+    color: var(--clay-deep);
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+
+  .hero .rom{
+    display:block;
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-size: 20px;
+    letter-spacing: 0.14em;
+    color: var(--terracotta);
+    margin-top: 18px;
+  }
+
+  .hero p.lede{
+    max-width: 480px;
+    margin: 28px auto 0;
+    font-size: 19px;
+    color: var(--ink);
+  }
+
+  /* ===== SECTION rhythm ===== */
+  section{
+    padding: 64px 0;
+    border-top: 1px solid rgba(43,33,24,0.14);
+  }
+
+  h2{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 34px;
+    margin: 0 0 8px;
+    color: var(--clay-deep);
+  }
+
+  h2 .hi{
+    font-size: 26px;
+    color: var(--terracotta);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .col-2{
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  @media (max-width: 720px){
+    .col-2{ grid-template-columns: 1fr; }
+  }
+
+  p{ margin: 0 0 16px; max-width: 62ch; }
+
+  .term{
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    background: var(--cream);
+    border: 1px solid rgba(43,33,24,0.16);
+    border-radius: 3px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+
+  .term .hi{ font-size: 17px; color: var(--clay-deep); }
+  .term .en{ font-size: 13px; color: var(--ink); opacity: 0.7; font-style: italic; }
+
+  /* pot illustration */
+  .pot-figure{
+    display: flex;
+    justify-content: center;
+  }
+
+  .pot-caption{
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink);
+    opacity: 0.65;
+    margin-top: 12px;
+  }
+
+  /* names list */
+  .names{
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 32px;
+  }
+
+  @media (max-width: 560px){
+    .names{ grid-template-columns: 1fr; }
+  }
+
+  .names li{
+    border-bottom: 1px solid rgba(43,33,24,0.16);
+    padding-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .names .region{
+    font-size: 14px;
+    opacity: 0.65;
+  }
+
+  .names .name .hi{ font-size: 20px; }
+
+  /* process steps */
+  .steps{
+    counter-reset: step;
+    margin: 32px 0 0;
+    padding: 0;
+    list-style: none;
+    border-left: 2px solid var(--terracotta);
+  }
+
+  .steps li{
+    position: relative;
+    padding: 0 0 34px 32px;
+  }
+
+  .steps li:last-child{ padding-bottom: 0; }
+
+  .steps li::before{
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: -13px;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    background: var(--terracotta);
+    color: var(--cream);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+  }
+
+  .steps h3{
+    margin: 0 0 4px;
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 19px;
+    color: var(--clay-deep);
+  }
+
+  .steps h3 .hi{ font-size: 16px; color: var(--terracotta); margin-left: 8px; }
+
+  .steps p{ margin: 0; font-size: 15.5px; }
+
+  /* footer */
+  footer{
+    padding: 48px 0 80px;
+    text-align: center;
+    color: var(--ink);
+    opacity: 0.6;
+    font-size: 14px;
+  }
+
+  footer .hi{ font-size: 20px; display:block; margin-bottom: 8px; opacity: 1; color: var(--clay-deep); }
+
+  blockquote{
+    margin: 40px 0 0;
+    padding: 24px 28px;
+    background: var(--indigo);
+    color: var(--cream);
+    border-radius: 4px;
+  }
+
+  blockquote .hi{ font-size: 22px; display:block; margin-bottom: 8px; }
+  blockquote span.rom{ font-size: 13px; opacity: 0.75; letter-spacing: 0.06em; }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<main class="wrap">
+
+  <section class="hero">
+    <svg class="wheel" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="100" cy="100" r="94" fill="none" stroke="#9A4B28" stroke-width="2" opacity="0.35"/>
+      <circle cx="100" cy="100" r="70" fill="#BE5C2E" opacity="0.12"/>
+      <g stroke="#6E3018" stroke-width="2" opacity="0.5">
+        <line x1="100" y1="10" x2="100" y2="30"/>
+        <line x1="100" y1="170" x2="100" y2="190"/>
+        <line x1="10" y1="100" x2="30" y2="100"/>
+        <line x1="170" y1="100" x2="190" y2="100"/>
+        <line x1="34" y1="34" x2="48" y2="48"/>
+        <line x1="152" y1="152" x2="166" y2="166"/>
+        <line x1="34" y1="166" x2="48" y2="152"/>
+        <line x1="152" y1="48" x2="166" y2="34"/>
+      </g>
+      <!-- pot silhouette -->
+      <path d="M100 60
+               C 78 60, 70 78, 72 96
+               C 73 108, 66 116, 65 132
+               C 64 152, 80 164, 100 164
+               C 120 164, 136 152, 135 132
+               C 134 116, 127 108, 128 96
+               C 130 78, 122 60, 100 60 Z"
+            fill="#9A4B28"/>
+      <ellipse cx="100" cy="60" rx="18" ry="6" fill="#6E3018"/>
+      <path d="M78 90 Q100 100 122 90" stroke="#6E3018" stroke-width="2" fill="none" opacity="0.6"/>
+      <path d="M74 118 Q100 128 126 118" stroke="#6E3018" stroke-width="2" fill="none" opacity="0.6"/>
+    </svg>
+
+    <h1 class="hi">मटका</h1>
+    <span class="rom">M A T K A</span>
+    <p class="lede">Before refrigerators, there was <span class="hi" style="font-size:19px;">मिट्टी</span> <em>(mitti — clay)</em>. A pot shaped by hand and fired in flame that has cooled Indian summers for thousands of years.</p>
+  </section>
+
+  <section id="what">
+    <div class="col-2">
+      <div>
+        <h2><span class="hi">यह क्या है</span>What it is</h2>
+        <p>A matka is an unglazed <span class="term"><span class="hi">मिट्टी</span><span class="en">clay</span></span> vessel, usually round-bellied with a narrow neck, used across Indian homes to store drinking <span class="term"><span class="hi">पानी</span><span class="en">water</span></span>. It has no motor, no electricity, and no moving parts — just earth, water, and fire.</p>
+        <p>The same shape appears in kitchens, temples, weddings, and roadside water stalls, known simply and fondly as the <span class="hi">घड़ा</span> in most of North India.</p>
+      </div>
+      <div>
+        <div class="pot-figure">
+          <svg width="160" height="200" viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="80" cy="26" rx="16" ry="6" fill="#6E3018"/>
+            <path d="M80 26
+                     C 55 26, 44 50, 48 74
+                     C 50 90, 40 100, 38 122
+                     C 36 150, 56 172, 80 172
+                     C 104 172, 124 150, 122 122
+                     C 120 100, 110 90, 112 74
+                     C 116 50, 105 26, 80 26 Z"
+                  fill="#9A4B28"/>
+            <path d="M52 70 Q80 82 108 70" stroke="#6E3018" stroke-width="2.5" fill="none" opacity="0.55"/>
+            <path d="M42 108 Q80 122 118 108" stroke="#6E3018" stroke-width="2.5" fill="none" opacity="0.55"/>
+            <ellipse cx="80" cy="172" rx="26" ry="7" fill="#5A2712" opacity="0.5"/>
+          </svg>
+        </div>
+        <p class="pot-caption">A typical <span class="hi">घड़ा</span> — round belly, narrow neck, unglazed body</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="science">
+    <h2><span class="hi">ठंडा पानी</span>Why the water stays cool</h2>
+    <div class="col-2">
+      <div>
+        <p>Unglazed clay is full of tiny pores. Water seeps slowly through them and reaches the outer surface, where it evaporates into the air. Evaporation pulls heat away with it — the same reason skin feels cool after sweat dries.</p>
+        <p>Because the process runs continuously, the water inside settles a few degrees below room temperature — no plastic, no wiring, no bill at the end of the month.</p>
+      </div>
+      <div>
+        <p>This is why a matka works best in dry heat and in a shaded, breezy spot, and why the very same clay that lets water breathe out also keeps it tasting cleaner than water left in a sealed bottle.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="names">
+    <h2><span class="hi">कई नाम, एक बर्तन</span>Many names, one vessel</h2>
+    <p>Nearly every region of India shapes this pot a little differently and calls it something of its own.</p>
+    <ul class="names">
+      <li><span class="name"><span class="hi">घड़ा</span> — Ghara</span><span class="region">North India, everyday water storage</span></li>
+      <li><span class="name"><span class="hi">सुराही</span> — Surahi</span><span class="region">Long-necked, used for serving water</span></li>
+      <li><span class="name"><span class="hi">मटकी</span> — Matki</span><span class="region">Small matka, tied up for Dahi Handi</span></li>
+      <li><span class="name"><span class="hi">गागर</span> — Gagar</span><span class="region">Carried on the hip or head from the well</span></li>
+      <li><span class="name"><span class="hi">कलश</span> — Kalash</span><span class="region">Ceremonial pot used in worship</span></li>
+      <li><span class="name"><span class="hi">मडका</span> — Madka</span><span class="region">Marathi name for the same pot</span></li>
+    </ul>
+  </section>
+
+  <section id="craft">
+    <h2><span class="hi">बनाने की कला</span>How it is made</h2>
+    <p>A <span class="term"><span class="hi">कुम्हार</span><span class="en">potter</span></span> turns raw earth into a matka over several days, working the <span class="term"><span class="hi">चाक</span><span class="en">wheel</span></span> by hand or foot.</p>
+    <ol class="steps">
+      <li>
+        <h3>Kneading the clay <span class="hi">गूंधना</span></h3>
+        <p>River clay is soaked, sieved for stones, and kneaded until it is smooth and free of air pockets.</p>
+      </li>
+      <li>
+        <h3>Throwing the shape <span class="hi">चाक पर चढ़ाना</span></h3>
+        <p>A lump is centred on the spinning wheel and drawn upward and outward into the pot's round body and narrow neck.</p>
+      </li>
+      <li>
+        <h3>Beating and shaping <span class="hi">थपकी</span></h3>
+        <p>Once leather-hard, the pot is beaten from outside with a wooden paddle while an anvil stone supports it from within, thinning and strengthening the walls.</p>
+      </li>
+      <li>
+        <h3>Drying <span class="hi">सुखाना</span></h3>
+        <p>Pots rest in the shade for days so they dry evenly and don't crack in the sun.</p>
+      </li>
+      <li>
+        <h3>Firing <span class="hi">पकाना</span></h3>
+        <p>Stacked in an open kiln and fired over wood or husk, the clay hardens permanently into ceramic — ready to hold water for years.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="culture">
+    <h2><span class="hi">त्योहारों में</span>In festivals and daily life</h2>
+    <p>A small matka, the <span class="hi">मटकी</span>, is filled with curd and hung high overhead for young men to form human pyramids and break during <span class="term"><span class="hi">दही हांडी</span><span class="en">Dahi Handi</span></span>, re-enacting Krishna's childhood mischief.</p>
+    <p>A larger, decorated pot — the <span class="hi">कलश</span> — is placed at the entrance of homes and temples during weddings and festivals as a symbol of abundance and a good beginning.</p>
+    <blockquote>
+      <span class="hi">जल ही जीवन है</span>
+      <span class="rom">Jal hi jeevan hai — Water itself is life</span>
+    </blockquote>
+  </section>
+
+  <footer>
+    <span class="hi">धन्यवाद</span>
+    Thank you for reading — dhanyavaad.
+  </footer>
+
+</main>
+
+</body>
+</html>

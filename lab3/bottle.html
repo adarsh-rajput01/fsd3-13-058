@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HydroSmart | Intelligent Hydration</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 1.5rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem 1.8rem;
+      border-radius: 9999px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 1rem;
+      text-align: center;
+      border: 1px solid #334155;
+    }
+
+    .card h3 {
+      margin-bottom: 0.5rem;
+      color: #38bdf8;
+    }
+
+    .interactive {
+      max-width: 400px;
+      margin: 2rem auto 5rem;
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 1rem;
+      text-align: center;
+      border: 1px solid #334155;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 16px;
+      background: #334155;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      border-top: 1px solid #334155;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">HydroSmart</div>
+    <a href="#buy" class="btn">Order Now</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Hydration, Automated.</h1>
+      <p>Real-time intake tracking, LED reminder rings, and built-in UV-C self-cleaning technology.</p>
+      <a href="#demo" class="btn">Test Demo</a>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h3>Self-Cleaning</h3>
+        <p>Built-in UV-C LED eliminates 99.9% of bacteria and odor in 60 seconds.</p>
+      </div>
+      <div class="card">
+        <h3>Sip Tracking</h3>
+        <p>Sensors track your exact daily intake and sync seamlessly via Bluetooth.</p>
+      </div>
+      <div class="card">
+        <h3>Smart Glow</h3>
+        <p>Subtle ambient LED rings remind you when it’s time to hydrate.</p>
+      </div>
+    </section>
+
+    <!-- Interactive Hydration Demo -->
+    <section class="interactive" id="demo">
+      <h3>Live Bottle Sync Demo</h3>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">Daily Goal: 2000 ml</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="fill"></div>
+      </div>
+      <p id="tracker-text" style="margin-bottom: 1.5rem;">0 / 2000 ml (0%)</p>
+      <button class="btn" onclick="drinkWater()">Log Sip (+250ml)</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 HydroSmart Inc. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let current = 0;
+    const goal = 2000;
+
+    function drinkWater() {
+      if (current < goal) {
+        current = Math.min(current + 250, goal);
+        const percent = Math.round((current / goal) * 100);
+        document.getElementById('fill').style.width = percent + '%';
+        document.getElementById('tracker-text').textContent = `${current} / ${goal} ml (${percent}%)`;
+      }
+    }
+  </script>
+</body>
+</html>

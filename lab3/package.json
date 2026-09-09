@@ -4,8 +4,8 @@
   "description": "local host - url\r 127.0.0.1- ip address",
   "main": "prg1.js",
   "scripts": {
-    "start": "node prg3.js",
-    "dev": "nodemon prg3.js"
+    "start": "node app.js",
+    "dev": "nodemon prg4.js"
   },
   "keywords": [],
   "author": "",

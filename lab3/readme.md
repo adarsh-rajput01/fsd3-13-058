@@ -80,3 +80,14 @@ server returns data only not Html content because html contents will be written 
      review:200
     }
     ```
+
+## Headers
+    ## Headers 
+is used to tell the clinet , the tyo=pe of data by the server it may be html file ,json file,plane text file any tokens (for token).
+
+1. text/pplain -> text file
+2. text/html -> html contentc/file
+3. application/json -> contents/file
+4. text/css -> stylesheet
+5. application/auth -> for tokens 
+   the headers can be set by  res object at server side by two ways

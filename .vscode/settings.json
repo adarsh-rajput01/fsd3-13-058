@@ -1,0 +1,8 @@
+{
+  "chat.tools.terminal.autoApprove": {
+    "/^Set-Location \"c:\\\\Users\\\\adars\\\\Desktop\\\\Web Design\\\\FSD-CSE13\\\\lab3\"; node prg6\\.js$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
+}

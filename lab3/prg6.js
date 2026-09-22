@@ -24,7 +24,7 @@ const server = http.createServer((req, res) => {
       console.log("Received Product:", product);
       res.statusCode = 201;
       res.setHeader("Content-Type", "application/json");
-      res.end(JSON.stringify({ message: "product added", product }));
+      res.end(JSON.stringify({ message: "product added",  }));
     });
   } else if (req.url.startsWith("/api/v1/products/") && req.method === "PUT") {
     const productId = req.url.split("/").pop();

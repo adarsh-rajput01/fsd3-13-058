@@ -91,3 +91,15 @@ is used to tell the clinet , the tyo=pe of data by the server it may be html fil
 4. text/css -> stylesheet
 5. application/auth -> for tokens 
    the headers can be set by  res object at server side by two ways
+
+# GET
+No parameter will pass to the server when we recieve all items.
+
+# POST
+Add records we pass the value from body section in JSON fromat of api tester.
+
+# DELETE 
+to delete any product or pass parameter that is id of the product from URL
+
+# UPDATE
+to update any product we pass id from url and data to update

@@ -13,3 +13,5 @@
 6.create prg1.js in folder 
 7.add folderName/node_modules in .gitignore  
 8.send function is used to revert back contents to the client , it may be html, json, Html file, plain text we can also add status code with status function, it can be change to any function
+
+create a new landing page for out project 

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Aurelius — The Manifesto & Architecture of Stillness</title>
+
+  <!-- Typography: Playfair Display, Cinzel, and Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            cinzel: ['Cinzel', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            obsidian: '#090808',
+            gold: {
+              300: '#E6CA85',
+              400: '#D4AF37',
+              500: '#C59B27',
+              600: '#9E7817'
+            }
+          },
+          animation: {
+            'pulse-soft': 'pulseSoft 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            pulseSoft: {
+              '0%, 100%': { opacity: '0.2' },
+              '50%': { opacity: '0.45' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card-hover:hover {
+      border-color: rgba(212, 175, 55, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090808;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2a2421;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #d4af37;
+    }
+  </style>
+</head>
+
+<body class="bg-obsidian text-stone-200 font-sans antialiased selection:bg-gold-400 selection:text-black transition-colors duration-300 relative overflow-x-hidden">
+
+  <!-- Ambient light gradients and classic grid overlay -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-32 left-1/3 w-[650px] h-[650px] bg-gradient-to-b from-amber-600/10 via-gold-500/5 to-transparent rounded-full blur-3xl"></div>
+    <div class="absolute top-[55%] -right-28 w-96 h-96 bg-stone-700/10 rounded-full blur-3xl"></div>
+    <div class="absolute inset-0 opacity-[0.025]" style="background-image: radial-gradient(#d4af37 1px, transparent 1px); background-size: 28px 28px;"></div>
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-stone-900/90 border border-gold-400/40 backdrop-blur-md px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3">
+      <span class="w-2.5 h-2.5 rounded-full bg-gold-400 animate-ping"></span>
+      <p id="toastMessage" class="text-sm font-medium text-stone-200">Action performed</p>
+    </div>
+  </div>
+
+  <header class="sticky top-0 z-40 w-full backdrop-blur-xl bg-obsidian/80 border-b border-stone-800/80 transition-all">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand & Home link -->
+      <a href="index.html" class="group flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-stone-900 to-stone-800 border border-gold-400/30 flex items-center justify-center text-gold-400 group-hover:border-gold-400 transition-all duration-300">
+          <i data-lucide="compass" class="w-5 h-5"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif tracking-[0.22em] text-lg font-bold text-stone-100 group-hover:text-gold-400 transition-colors">AURELIUS</span>
+          <span class="text-[9px] tracking-[0.3em] uppercase text-stone-500 font-sans -mt-0.5">Chronicles & Flow</span>
+        </div>
+      </a>
+
+      <!-- Quick Page Navigation -->
+      <nav class="hidden md:flex items-center space-x-8 text-xs tracking-widest uppercase font-medium text-stone-400">
+        <a href="#manifesto" class="hover:text-gold-300 transition-colors">Manifesto</a>
+        <a href="#craftsmanship" class="hover:text-gold-300 transition-colors">The Craft</a>
+        <a href="#principles" class="hover:text-gold-300 transition-colors">Pillars</a>
+        <a href="#chronicle" class="hover:text-gold-300 transition-colors">Chronology</a>
+      </nav>
+
+      <!-- Return to Main Showcase -->
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-900 border border-stone-800 text-stone-300 hover:text-white hover:border-gold-400/50 transition-all">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+          <span>Return to Showcase</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10">
+
+    <section id="manifesto" class="pt-16 pb-20 md:pt-28 md:pb-28 px-5 sm:px-8 max-w-5xl mx-auto text-center">
+      
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-gold-400/25 bg-gold-400/5 text-gold-300 text-xs tracking-widest uppercase font-medium mb-6">
+        <i data-lucide="scroll" class="w-3.5 h-3.5"></i>
+        The Aurelius Monograph
+      </div>
+
+      <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl text-stone-100 font-normal leading-[1.12] tracking-tight mb-8">
+        We build software for the <span class="italic text-gold-300 font-normal">quiet mind</span> in a clamoring era.
+      </h1>
+
+      <p class="text-base sm:text-xl text-stone-400 max-w-3xl mx-auto font-light leading-relaxed">
+        The average person unlocks their pocket rectangle over one hundred times each day, greeted not by clarity, but by engineered chaos. Aurelius exists as a deliberate counter-measure: software engineered as sanctuary.
+      </p>
+
+      <!-- Quote callout -->
+      <div class="mt-14 p-8 sm:p-10 rounded-3xl glass-card border border-gold-400/20 max-w-3xl mx-auto text-left relative overflow-hidden">
+        <div class="absolute -right-4 -bottom-6 text-stone-800/30 text-9xl font-serif select-none pointer-events-none">”</div>
+        <p class="font-serif text-lg sm:text-xl text-stone-200 italic leading-relaxed relative z-10">
+          "Nowhere can man find a quieter or more untroubled retreat than in his own soul. Constantly then grant yourself this retreat, and refresh yourself."
+        </p>
+        <div class="mt-4 flex items-center justify-between text-xs tracking-widest uppercase text-gold-400 font-cinzel">
+          <span>Marcus Aurelius — Meditations, Book IV</span>
+          <span>167 AD</span>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="craftsmanship" class="py-20 border-t border-stone-800/80 bg-stone-950/40">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8">
+        
+        <div class="max-w-3xl mb-16">
+          <span class="text-xs uppercase tracking-[0.25em] text-gold-400 font-cinzel">The Synthesis</span>
+          <h2 class="font-serif text-3xl sm:text-4xl text-stone-100 mt-2 font-normal">
+            Where antique guildcraft meets modern silicon.
+          </h2>
+          <p class="text-stone-400 text-sm sm:text-base font-light mt-3">
+            We rejected the dominant Silicon Valley paradigm of maximizing screen-time and telemetry. Instead, we turned to century-old typographic foundries, Italian bookbinders, and high-frequency tactile physics.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Contrast Column 1: Dominant Paradigm -->
+          <div class="p-8 rounded-3xl bg-stone-950 border border-stone-850 space-y-4">
+            <div class="flex items-center gap-2 text-stone-500 font-mono text-xs uppercase tracking-wider">
+              <i data-lucide="x-circle" class="w-4 h-4 text-red-500/70"></i>
+              The Dopamine Paradigm
+            </div>
+            <h3 class="font-serif text-xl text-stone-300">Algorithmic Acceleration</h3>
+            <ul class="space-y-3 text-xs sm:text-sm text-stone-500 font-light leading-relaxed">
+              <li class="flex items-start gap-2.5">
+                <span class="text-stone-600 mt-0.5">—</span>
+                Red indicator badges tuned to activate nervous alertness.
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-stone-600 mt-0.5">—</span>
+                Remote cloud trackers monetizing dwell times and attention spans.
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-stone-600 mt-0.5">—</span>
+                Brittle web wrappers disguised as native mobile applications.
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contrast Column 2: The Aurelius Way -->
+          <div class="p-8 rounded-3xl glass-card border border-gold-400/30 space-y-4 shadow-xl">
+            <div class="flex items-center gap-2 text-gold-400 font-mono text-xs uppercase tracking-wider">
+              <i data-lucide="check-circle" class="w-4 h-4 text-gold-400"></i>
+              The Aurelius Covenant
+            </div>
+            <h3 class="font-serif text-xl text-stone-100">Dignified Stillness</h3>
+            <ul class="space-y-3 text-xs sm:text-sm text-stone-300 font-light leading-relaxed">
+              <li class="flex items-start gap-2.5">
+                <span class="text-gold-400 mt-0.5">✦</span>
+                Optically tuned serif fonts with high negative space to relax the gaze.
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-gold-400 mt-0.5">✦</span>
+                Zero trackers, zero network requests required to think, write, or focus.
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-gold-400 mt-0.5">✦</span>
+                Native haptics mirroring the drag of nibs on cold-pressed vellum.
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section id="principles" class="py-24 max-w-7xl mx-auto px-5 sm:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-xs uppercase tracking-[0.25em] text-gold-400 font-cinzel">Three Immutable Pillars</span>
+        <h2 class="font-serif text-3xl sm:text-4xl text-stone-100 mt-2 font-normal">
+          The Foundations of Every Line of Code
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Pillar I -->
+        <div class="p-8 rounded-3xl glass-card glass-card-hover transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-stone-900 border border-stone-800 flex items-center justify-center text-gold-400 mb-6">
+              <i data-lucide="anchor" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[11px] font-mono text-gold-400 tracking-widest uppercase">Pillar I</span>
+            <h3 class="font-serif text-2xl text-stone-100 mt-1 mb-3">Intentional Friction</h3>
+            <p class="text-stone-400 text-sm font-light leading-relaxed">
+              We do not strive for mindless frictionless consumption. We introduce conscious breaths before actions, ensuring every record reflects true will rather than impulse.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-stone-850 text-xs text-stone-500 font-serif italic">
+            "Deliberation over reflex."
+          </div>
+        </div>
+
+        <!-- Pillar II -->
+        <div class="p-8 rounded-3xl glass-card glass-card-hover transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-stone-900 border border-stone-800 flex items-center justify-center text-gold-400 mb-6">
+              <i data-lucide="key" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[11px] font-mono text-gold-400 tracking-widest uppercase">Pillar II</span>
+            <h3 class="font-serif text-2xl text-stone-100 mt-1 mb-3">Total Inward Solitude</h3>
+            <p class="text-stone-400 text-sm font-light leading-relaxed">
+              Your most vulnerable writings and reflections should never reside in a corporate server farm. Your device is your temple; all encryptions are derived locally on physical silicon.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-stone-850 text-xs text-stone-500 font-serif italic">
+            "Encrypted by default, shared by decree."
+          </div>
+        </div>
+
+        <!-- Pillar III -->
+        <div class="p-8 rounded-3xl glass-card glass-card-hover transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-stone-900 border border-stone-800 flex items-center justify-center text-gold-400 mb-6">
+              <i data-lucide="pen-tool" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[11px] font-mono text-gold-400 tracking-widest uppercase">Pillar III</span>
+            <h3 class="font-serif text-2xl text-stone-100 mt-1 mb-3">Tactile Restraint</h3>
+            <p class="text-stone-400 text-sm font-light leading-relaxed">
+              Every curve, shadow, and easing curve obeys classical proportions. Interfaces should not scream for attention; they should whisper and step aside once the thought is recorded.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-stone-850 text-xs text-stone-500 font-serif italic">
+            "Quiet elegance outlasts noise."
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="chronicle" class="py-24 border-t border-stone-800/80 bg-stone-950/50">
+      <div class="max-w-4xl mx-auto px-5 sm:px-8">
+        
+        <div class="text-center mb-16">
+          <span class="text-xs uppercase tracking-[0.25em] text-gold-400 font-cinzel">The Timeline</span>
+          <h2 class="font-serif text-3xl sm:text-4xl text-stone-100 mt-2 font-normal">
+            The Chronicle of Evolution
+          </h2>
+          <p class="text-stone-400 text-sm font-light mt-2">Click each epoch to examine the architectural shifts.</p>
+        </div>
+
+        <!-- Interactive Epoch Cards -->
+        <div class="space-y-6">
+          
+          <!-- Milestone 1 -->
+          <div onclick="selectMilestone(0)" id="milestone-card-0" class="cursor-pointer p-6 sm:p-8 rounded-2xl glass-card border border-gold-400/40 transition-all">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-cinzel text-xs text-gold-400 tracking-widest uppercase">Epoch I • Summer 2024</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-stone-800 text-stone-400">The Genesis Paper</span>
+            </div>
+            <h4 class="font-serif text-xl text-stone-100 font-medium">Rejection of the Stream</h4>
+            <p class="text-stone-400 text-sm font-light mt-2 leading-relaxed">
+              Founded as an experimental manifesto between typographers in Oxford and systems architects in Zurich. Initial prototypes discarded push notification servers completely.
+            </p>
+          </div>
+
+          <!-- Milestone 2 -->
+          <div onclick="selectMilestone(1)" id="milestone-card-1" class="cursor-pointer p-6 sm:p-8 rounded-2xl glass-card border border-stone-800 transition-all opacity-80 hover:opacity-100">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-cinzel text-xs text-gold-400 tracking-widest uppercase">Epoch II • Winter 2025</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-stone-800 text-stone-400">Native Engine</span>
+            </div>
+            <h4 class="font-serif text-xl text-stone-100 font-medium">The Haptic Mechanical Synthesizer</h4>
+            <p class="text-stone-400 text-sm font-light mt-2 leading-relaxed">
+              Engineered proprietary physics curves for mobile glass surfaces to recreate the physical friction and weight of gold nibs upon cotton rag paper.
+            </p>
+          </div>
+
+          <!-- Milestone 3 -->
+          <div onclick="selectMilestone(2)" id="milestone-card-2" class="cursor-pointer p-6 sm:p-8 rounded-2xl glass-card border border-stone-800 transition-all opacity-80 hover:opacity-100">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-cinzel text-xs text-gold-400 tracking-widest uppercase">Epoch III • Spring 2026</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-stone-800 text-stone-400">Public Release</span>
+            </div>
+            <h4 class="font-serif text-xl text-stone-100 font-medium">Edition IV: The Sovereign Ledger</h4>
+            <p class="text-stone-400 text-sm font-light mt-2 leading-relaxed">
+              Introduction of acoustic binaural soliloquies, zero-knowledge vault backups, and universal cross-device cryptographic keys.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section class="py-24 max-w-4xl mx-auto px-5 sm:px-8 text-center">
+      <div class="p-10 sm:p-14 rounded-3xl glass-card border border-gold-400/25 relative overflow-hidden">
+        <div class="relative z-10 space-y-4">
+          <span class="text-xs uppercase tracking-[0.25em] text-gold-400 font-cinzel">The Custodians</span>
+          <h2 class="font-serif text-3xl sm:text-4xl text-stone-100 font-normal">
+            An independent studio beholden only to craftsmanship.
+          </h2>
+          <p class="text-stone-400 text-sm sm:text-base font-light max-w-xl mx-auto leading-relaxed">
+            We accept no venture equity that obligates algorithmic manipulation or user attention mining. Aurelius is funded directly by patrons who value quietude.
+          </p>
+          <div class="pt-6 flex flex-wrap justify-center gap-4">
+            <a href="index.html#download" class="px-6 py-3 rounded-full bg-gold-400 hover:bg-gold-300 text-stone-950 font-semibold text-xs tracking-wider uppercase transition-all shadow-lg">
+              Acquire the Mobile Edition
+            </a>
+            <a href="index.html" class="px-6 py-3 rounded-full bg-stone-900 border border-stone-750 text-stone-200 hover:text-white text-xs tracking-wider uppercase transition-all">
+              Inspect the Live App Mockup
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="py-12 border-t border-stone-800/80 bg-obsidian text-stone-500 text-xs">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+      
+      <div class="flex items-center gap-3">
+        <span class="font-serif tracking-[0.2em] font-semibold text-stone-200">AURELIUS</span>
+        <span class="text-stone-700">|</span>
+        <span>© 2026 Aurelius Laboratory Corp. All rights reserved.</span>
+      </div>
+
+      <div class="flex items-center space-x-6">
+        <a href="index.html" class="hover:text-gold-400 transition-colors">Showcase Home</a>
+        <a href="#" onclick="triggerToast('Displaying Privacy Covenant')" class="hover:text-gold-400 transition-colors">Privacy Covenant</a>
+        <a href="#" onclick="triggerToast('Displaying Colophon')" class="hover:text-gold-400 transition-colors">Colophon</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Interactive milestone selector
+    function selectMilestone(index) {
+      for (let i = 0; i < 3; i++) {
+        const card = document.getElementById(`milestone-card-${i}`);
+        if (i === index) {
+          card.classList.add('border-gold-400/40', 'opacity-100');
+          card.classList.remove('border-stone-800', 'opacity-80');
+        } else {
+          card.classList.remove('border-gold-400/40', 'opacity-100');
+          card.classList.add('border-stone-800', 'opacity-80');
+        }
+      }
+      const epochs = ["Epoch I (Oxford & Zurich Genesis)", "Epoch II (Mechanical Synthesizer)", "Epoch III (Edition IV Release)"];
+      triggerToast(`Inspecting: ${epochs[index]}`);
+    }
+
+    // Accessible Toast Notification (never alerts)
+    let toastTimeout;
+    function triggerToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      toastMessage.textContent = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

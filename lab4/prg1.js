@@ -6,6 +6,22 @@ const app = express();
 app.get("/", (req, res) => {
     res.send("<h1>HEllo Express</h1>");
 });
+app.get("/about", (req, res) => {
+    res.send("<h2>About Express</h2>");
+});
+
+const products = [
+  { id: 1, name: "marker", qty: 100, price: 15 },
+  { id: 2, name: "pen", qty: 200, price: 10 },
+];
+
+app.get("/products", (req, res) => {
+    res.status(200).json(products);
+});
+
+app.use((req, res) => {
+    res.status(404).send("<h1>Page Not Found</h1>");
+});
 
 
 //always listen at last 

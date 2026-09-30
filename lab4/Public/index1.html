@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AURELIUS — The Art of Digital Sanctuary</title>
+  
+  <!-- Fonts: Playfair Display (Classic Editorial Serif) & Plus Jakarta Sans (Ultra-modern Geometric Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            cinzel: ['Cinzel', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            sand: {
+              50: '#FAF8F5',
+              100: '#F4EFEA',
+              200: '#E7DFD5',
+              300: '#D5C7B8',
+              800: '#2A2421',
+              900: '#171412',
+            },
+            obsidian: '#090808',
+            gold: {
+              300: '#E6CA85',
+              400: '#D4AF37',
+              500: '#C59B27',
+              600: '#9E7817'
+            }
+          },
+          animation: {
+            'float-slow': 'floating 7s ease-in-out infinite',
+            'pulse-soft': 'pulseSoft 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            floating: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-12px) rotate(0.4deg)' },
+            },
+            pulseSoft: {
+              '0%, 100%': { opacity: '0.2' },
+              '50%': { opacity: '0.45' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom glassmorphism & grain overlays */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card-light {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 0, 0, 0.07);
+    }
+    .ambient-glow {
+      background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+    }
+    .phone-shadow {
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 35px -5px rgba(212, 175, 55, 0.2);
+    }
+    /* Scrollbar aesthetics */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090808;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2a2421;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #d4af37;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+
+<body class="bg-obsidian text-stone-200 font-sans antialiased selection:bg-gold-400 selection:text-black transition-colors duration-300 relative overflow-x-hidden">
+
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-gradient-to-b from-amber-600/10 via-amber-500/5 to-transparent rounded-full blur-3xl"></div>
+    <div class="absolute top-[40%] -left-32 w-96 h-96 bg-stone-700/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-10 right-0 w-[500px] h-[500px] bg-gold-500/5 rounded-full blur-3xl"></div>
+    <!-- Editorial grain grid -->
+    <div class="absolute inset-0 opacity-[0.025]" style="background-image: radial-gradient(#d4af37 1px, transparent 1px); background-size: 28px 28px;"></div>
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-stone-900/90 border border-gold-400/40 backdrop-blur-md px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3">
+      <span class="w-2.5 h-2.5 rounded-full bg-gold-400 animate-ping"></span>
+      <p id="toastMessage" class="text-sm font-medium text-stone-200">Action performed</p>
+    </div>
+  </div>
+
+  <header class="sticky top-0 z-40 w-full backdrop-blur-xl bg-obsidian/75 border-b border-stone-800/80 transition-all">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 h-20 flex items-center justify-between">
+      <!-- Brand Logo -->
+      <a href="#" class="group flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-stone-900 to-stone-800 border border-gold-400/30 flex items-center justify-center text-gold-400 group-hover:border-gold-400 transition-all duration-300 shadow-sm">
+          <i data-lucide="compass" class="w-5 h-5"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif tracking-[0.22em] text-lg font-bold text-stone-100 group-hover:text-gold-400 transition-colors">AURELIUS</span>
+          <span class="text-[9px] tracking-[0.3em] uppercase text-stone-500 font-sans -mt-0.5">Chronicles & Flow</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center space-x-9 text-xs tracking-widest uppercase font-medium text-stone-400">
+        <a href="#philosophy" class="hover:text-gold-300 transition-colors">Philosophy</a>
+        <a href="#interactive-preview" class="hover:text-gold-300 transition-colors">Interface</a>
+        <a href="#craft" class="hover:text-gold-300 transition-colors">The Craft</a>
+        <a href="#critique" class="hover:text-gold-300 transition-colors">Praise</a>
+      </nav>
+
+      <!-- Action & Store -->
+      <div class="flex items-center gap-4">
+        <a href="#download" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-gradient-to-r from-stone-100 to-stone-300 text-stone-900 hover:from-gold-300 hover:to-gold-500 hover:text-black transition-all duration-300 shadow-md transform hover:-translate-y-0.5">
+          <span>Get Access</span>
+          <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+        </a>
+        <button id="mobileMenuBtn" aria-label="Toggle Navigation Menu" class="md:hidden p-2 rounded-xl text-stone-300 hover:text-white bg-stone-900/60 border border-stone-800">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="hidden md:hidden px-6 py-5 bg-stone-950/95 border-b border-stone-800 backdrop-blur-2xl">
+      <div class="flex flex-col gap-4 text-xs uppercase tracking-widest font-medium text-stone-300">
+        <a href="#philosophy" class="py-1 hover:text-gold-400">Philosophy</a>
+        <a href="#interactive-preview" class="py-1 hover:text-gold-400">Interactive Mockup</a>
+        <a href="#craft" class="py-1 hover:text-gold-400">The Craft</a>
+        <a href="#critique" class="py-1 hover:text-gold-400">Praise</a>
+        <a href="#download" class="mt-2 text-center py-3 bg-gold-400 text-black font-semibold rounded-xl">Acquire Aurelius</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10">
+    <section class="pt-14 pb-20 md:pt-24 md:pb-32 px-5 sm:px-8 max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        
+        <!-- Left: Editorial Typography Copy -->
+        <div class="lg:col-span-6 space-y-7 text-left">
+          
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-gold-400/25 bg-gold-400/5 text-gold-300 text-xs tracking-wider uppercase font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse"></span>
+            Edition IV • Spring 2026 Release
+          </div>
+
+          <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] text-stone-100 font-normal leading-[1.08] tracking-tight">
+            Where classical <span class="italic font-normal text-gold-300">serenity</span> meets digital precision.
+          </h1>
+
+          <p class="text-base sm:text-lg text-stone-400 max-w-xl font-light leading-relaxed">
+            Aurelius reimagines mobile productivity into quiet luxury. No chaotic pings, no algorithmic noise—just thoughtful prose, meditative focus, and tactile daily cadence.
+          </p>
+
+          <!-- App Store Badges / Download buttons -->
+          <div class="pt-2 flex flex-wrap items-center gap-4">
+            <button onclick="triggerToast('Redirecting to Apple App Store...')" class="flex items-center gap-3 px-5 py-3 rounded-2xl bg-stone-900 border border-stone-700/80 hover:border-gold-400/70 hover:bg-stone-850 transition-all group shadow-lg">
+              <i data-lucide="apple" class="w-6 h-6 text-stone-100 group-hover:scale-105 transition-transform"></i>
+              <div class="text-left">
+                <p class="text-[10px] uppercase tracking-widest text-stone-400 leading-tight">Available on</p>
+                <p class="text-sm font-semibold text-stone-100 tracking-wide">App Store</p>
+              </div>
+            </button>
+
+            <button onclick="triggerToast('Redirecting to Google Play Store...')" class="flex items-center gap-3 px-5 py-3 rounded-2xl bg-stone-900 border border-stone-700/80 hover:border-gold-400/70 hover:bg-stone-850 transition-all group shadow-lg">
+              <i data-lucide="play" class="w-5 h-5 text-stone-100 group-hover:scale-105 transition-transform fill-current"></i>
+              <div class="text-left">
+                <p class="text-[10px] uppercase tracking-widest text-stone-400 leading-tight">Get it on</p>
+                <p class="text-sm font-semibold text-stone-100 tracking-wide">Google Play</p>
+              </div>
+            </button>
+          </div>
+
+          <!-- Trust metrics -->
+          <div class="pt-6 border-t border-stone-800/80 flex items-center gap-8 text-xs text-stone-400">
+            <div>
+              <span class="block text-xl font-serif text-stone-100 font-semibold">4.92 ★</span>
+              <span>12,000+ Curated Reviews</span>
+            </div>
+            <div class="h-8 w-[1px] bg-stone-800"></div>
+            <div>
+              <span class="block text-xl font-serif text-stone-100 font-semibold">Zero Ads</span>
+              <span>100% Private Encryption</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Realistic Mobile Frame & Live Interactive UI -->
+        <div class="lg:col-span-6 flex justify-center items-center relative" id="interactive-preview">
+          
+          <!-- Outer decorative halo aura -->
+          <div class="absolute w-[360px] h-[650px] bg-gradient-to-tr from-gold-500/15 via-stone-800/20 to-transparent rounded-[60px] blur-2xl -z-10 animate-pulse-soft"></div>
+
+          <!-- Interactive Screen Selector Pills (Floating Beside Phone on Desktop, Above on Mobile) -->
+          <div class="w-full max-w-[370px]">
+            <div class="flex justify-between items-center bg-stone-900/80 backdrop-blur-md p-1.5 rounded-2xl border border-stone-800 mb-4 shadow-xl text-xs font-medium">
+              <button onclick="switchScreen('journal')" id="tab-journal" class="flex-1 py-2 rounded-xl transition-all duration-300 text-stone-200 bg-stone-800 font-semibold shadow flex items-center justify-center gap-1.5">
+                <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Journal
+              </button>
+              <button onclick="switchScreen('cadence')" id="tab-cadence" class="flex-1 py-2 rounded-xl transition-all duration-300 text-stone-400 hover:text-stone-200 flex items-center justify-center gap-1.5">
+                <i data-lucide="hourglass" class="w-3.5 h-3.5"></i> Cadence
+              </button>
+              <button onclick="switchScreen('sanctuary')" id="tab-sanctuary" class="flex-1 py-2 rounded-xl transition-all duration-300 text-stone-400 hover:text-stone-200 flex items-center justify-center gap-1.5">
+                <i data-lucide="compass" class="w-3.5 h-3.5"></i> Vault
+              </button>
+            </div>
+
+            <!-- Realistic Smartphone Frame -->
+            <div class="relative mx-auto w-full max-w-[340px] aspect-[9/19] bg-stone-950 rounded-[48px] p-3.5 shadow-2xl border-4 border-stone-700/80 ring-1 ring-gold-400/20 phone-shadow transition-transform duration-500">
+              
+              <!-- Hardware Bezels & Dynamic Island -->
+              <div class="relative w-full h-full bg-[#0c0a09] rounded-[36px] overflow-hidden flex flex-col justify-between border border-stone-800/90 select-none">
+                
+                <!-- Dynamic Island / Speaker Pill -->
+                <div class="pt-3 px-6 flex justify-between items-center z-30">
+                  <span id="phoneClock" class="text-[11px] font-semibold tracking-tight text-stone-300">09:41</span>
+                  <div class="w-20 h-4 bg-stone-900 border border-stone-800 rounded-full flex items-center justify-center">
+                    <div class="w-2 h-2 rounded-full bg-stone-700 mr-2"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500/80"></div>
+                  </div>
+                  <div class="flex items-center gap-1 text-stone-300">
+                    <i data-lucide="wifi" class="w-3 h-3"></i>
+                    <i data-lucide="battery" class="w-3.5 h-3.5"></i>
+                  </div>
+                </div>
+
+                <!-- PHONE CONTENT SCREENS CONTAINER -->
+                <div class="relative flex-1 overflow-hidden px-5 py-4">
+
+                  <!-- SCREEN 1: THE JOURNAL (Default) -->
+                  <div id="screen-journal" class="screen-view transition-all duration-500 opacity-100 translate-y-0 absolute inset-0 px-5 py-3 overflow-y-auto hide-scrollbar flex flex-col justify-between">
+                    <div>
+                      <div class="flex justify-between items-center text-stone-400 text-xs mb-2">
+                        <span class="tracking-widest uppercase text-[10px] text-gold-400 font-cinzel">Marcus Aurelius</span>
+                        <span class="text-[10px] text-stone-500">Vol. VII</span>
+                      </div>
+                      <h3 class="font-serif text-xl text-stone-100 font-medium italic leading-snug">
+                        "You have power over your mind — not outside events."
+                      </h3>
+                      <p class="text-[11px] text-stone-400 mt-2 font-light leading-relaxed">
+                        Today's cadence asks: what is within your voluntary control, and what deserves your dignified calm?
+                      </p>
+
+                      <!-- Interactive Entry Widget -->
+                      <div class="mt-4 p-3 rounded-2xl bg-stone-900/90 border border-stone-800">
+                        <div class="flex items-center justify-between text-[11px] text-stone-400 mb-2">
+                          <span class="font-medium text-stone-200">Daily Soliloquy</span>
+                          <span class="text-gold-400 text-[10px]">Saved 2m ago</span>
+                        </div>
+                        <p id="interactiveText" class="text-xs text-stone-300 font-serif italic border-l-2 border-gold-400/50 pl-2">
+                          Refusing friction. Walking slower between meetings. Guarding quiet hours.
+                        </p>
+                        <div class="mt-3 flex gap-2">
+                          <button onclick="stampThought()" class="w-full py-1.5 bg-stone-800 hover:bg-stone-750 text-[10px] font-medium tracking-wider uppercase text-stone-300 rounded-lg transition-colors border border-stone-700/60 flex items-center justify-center gap-1">
+                            <i data-lucide="feather" class="w-3 h-3 text-gold-400"></i> Append Reflection
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Bottom mini metric -->
+                    <div class="mt-4 p-3 rounded-xl bg-gradient-to-r from-stone-900/60 to-stone-850/60 border border-stone-800/80 flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-full bg-gold-400/10 text-gold-400 flex items-center justify-center">
+                          <i data-lucide="flame" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                          <p class="text-[10px] text-stone-400">Stillness Streak</p>
+                          <p class="text-xs font-semibold text-stone-200 font-sans">42 Consecutive Days</p>
+                        </div>
+                      </div>
+                      <span class="text-[10px] text-gold-400 font-serif italic">Ascendant</span>
+                    </div>
+                  </div>
+
+                  <!-- SCREEN 2: THE CADENCE (Focus & Timer) -->
+                  <div id="screen-cadence" class="screen-view transition-all duration-500 opacity-0 translate-y-6 pointer-events-none absolute inset-0 px-5 py-3 overflow-y-auto hide-scrollbar flex flex-col justify-between">
+                    <div>
+                      <div class="flex justify-between items-center text-stone-400 text-xs mb-3">
+                        <span class="tracking-widest uppercase text-[10px] text-gold-400 font-cinzel">Focus State</span>
+                        <span class="text-[10px] text-stone-500">Pomodoro 3.0</span>
+                      </div>
+                      <div class="text-center my-4">
+                        <div class="relative inline-flex items-center justify-center">
+                          <!-- Radial Circle Mockup -->
+                          <svg class="w-36 h-36 transform -rotate-90">
+                            <circle cx="72" cy="72" r="60" stroke="#1f1c19" stroke-width="6" fill="transparent" />
+                            <circle cx="72" cy="72" r="60" stroke="#d4af37" stroke-width="6" fill="transparent" stroke-dasharray="376" stroke-dashoffset="110" class="transition-all duration-1000" id="timerCircle" />
+                          </svg>
+                          <div class="absolute flex flex-col items-center">
+                            <span id="mockTimerDisplay" class="font-serif text-3xl font-bold text-stone-100">35:00</span>
+                            <span class="text-[9px] tracking-widest uppercase text-stone-400">Deep Work</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="text-center space-y-2">
+                        <p class="text-xs font-serif italic text-stone-300">Ambient soundscape: "Roman Library at Rain"</p>
+                        <div class="flex justify-center gap-3 pt-1">
+                          <button onclick="togglePhoneTimer()" id="timerControlBtn" class="px-5 py-1.5 rounded-full bg-gold-400 text-black font-semibold text-xs tracking-wider uppercase shadow hover:bg-gold-300 transition-colors">
+                            Begin Cadence
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="p-2.5 rounded-xl bg-stone-900 border border-stone-800 text-[10px] text-stone-400 flex items-center justify-between">
+                      <span>Binaural 432Hz</span>
+                      <span class="text-emerald-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active</span>
+                    </div>
+                  </div>
+
+                  <!-- SCREEN 3: THE VAULT (Private Offline Storage) -->
+                  <div id="screen-sanctuary" class="screen-view transition-all duration-500 opacity-0 translate-y-6 pointer-events-none absolute inset-0 px-5 py-3 overflow-y-auto hide-scrollbar flex flex-col justify-between">
+                    <div>
+                      <div class="flex justify-between items-center text-stone-400 text-xs mb-3">
+                        <span class="tracking-widest uppercase text-[10px] text-gold-400 font-cinzel">Sanctuary</span>
+                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+                      </div>
+                      <h4 class="font-serif text-lg text-stone-100">Private Records</h4>
+                      <p class="text-[10px] text-stone-400 mt-1">Zero cloud sync unless decreed. Biometrically sealed.</p>
+
+                      <div class="mt-4 space-y-2 text-left">
+                        <div class="p-2.5 rounded-xl bg-stone-900/90 border border-stone-800 flex justify-between items-center">
+                          <div>
+                            <p class="text-xs text-stone-200 font-medium">Manifesto 2026</p>
+                            <p class="text-[9px] text-stone-500">Encrypted AES-256</p>
+                          </div>
+                          <i data-lucide="lock" class="w-3.5 h-3.5 text-stone-500"></i>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-stone-900/90 border border-stone-800 flex justify-between items-center">
+                          <div>
+                            <p class="text-xs text-stone-200 font-medium">Stoic Exercises</p>
+                            <p class="text-[9px] text-stone-500">18 Entries • 4 Audios</p>
+                          </div>
+                          <i data-lucide="lock" class="w-3.5 h-3.5 text-stone-500"></i>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-stone-900/90 border border-stone-800 flex justify-between items-center">
+                          <div>
+                            <p class="text-xs text-stone-200 font-medium">Epictetus Annotations</p>
+                            <p class="text-[9px] text-stone-500">Offline Synced</p>
+                          </div>
+                          <i data-lucide="lock" class="w-3.5 h-3.5 text-stone-500"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button onclick="triggerToast('Authenticating with FaceID...')" class="w-full py-2 bg-stone-800 text-stone-200 text-xs rounded-xl border border-stone-700 flex items-center justify-center gap-1.5 hover:bg-stone-750">
+                      <i data-lucide="fingerprint" class="w-4 h-4 text-gold-400"></i> Biometric Unlock
+                    </button>
+                  </div>
+
+                </div>
+
+                <!-- Phone Bottom Navigation Bar -->
+                <div class="px-6 py-2.5 bg-stone-950/90 border-t border-stone-850 flex justify-around items-center text-stone-500 text-xs">
+                  <button onclick="switchScreen('journal')" class="hover:text-gold-400 transition-colors">
+                    <i data-lucide="feather" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="switchScreen('cadence')" class="hover:text-gold-400 transition-colors">
+                    <i data-lucide="clock" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="switchScreen('sanctuary')" class="hover:text-gold-400 transition-colors">
+                    <i data-lucide="shield" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="triggerToast('Opening Aurelius Soundscapes')" class="hover:text-gold-400 transition-colors">
+                    <i data-lucide="headphones" class="w-4 h-4"></i>
+                  </button>
+                </div>
+
+                <!-- Home Indicator Bar -->
+                <div class="pb-1.5 flex justify-center">
+                  <div class="w-28 h-1 bg-stone-700 rounded-full"></div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Caption below mockup -->
+            <p class="text-center text-[11px] text-stone-500 tracking-widest uppercase mt-3 flex items-center justify-center gap-1.5">
+              <i data-lucide="mouse-pointer-click" class="w-3 h-3 text-gold-400"></i> Click tabs or buttons to test live mock
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section id="philosophy" class="py-24 border-y border-stone-800/80 bg-stone-950/40 relative">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+          <span class="text-xs uppercase tracking-[0.25em] text-gold-400 font-cinzel">Design Doctrine</span>
+          <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl text-stone-100 font-normal">
+            Old-world serenity. <br/><span class="italic text-stone-300">New-world performance.</span>
+          </h2>
+          <p class="text-stone-400 text-sm sm:text-base font-light">
+            Modern mobile software has become a carnival of dopamine triggers. Aurelius returns dignity to your device through intentional typographic hierarchy, serene rhythm, and purposeful speed.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <!-- Pillar 1 -->
+          <div class="p-8 rounded-3xl glass-card hover:border-gold-400/40 transition-all duration-300 group">
+            <div class="w-12 h-12 rounded-2xl bg-stone-900 border border-stone-750 flex items-center justify-center text-gold-400 mb-6 group-hover:scale-110 transition-transform">
+              <i data-lucide="book" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-serif text-2xl text-stone-100 mb-3">Serif Typographic Rest</h3>
+            <p class="text-stone-400 text-sm leading-relaxed font-light">
+              Crafted with bespoke optical serif sizes that reduce ocular strain during extended dawn and dusk journaling intervals.
+            </p>
+          </div>
+
+          <!-- Pillar 2 -->
+          <div class="p-8 rounded-3xl glass-card hover:border-gold-400/40 transition-all duration-300 group">
+            <div class="w-12 h-12 rounded-2xl bg-stone-900 border border-stone-750 flex items-center justify-center text-gold-400 mb-6 group-hover:scale-110 transition-transform">
+              <i data-lucide="sparkles" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-serif text-2xl text-stone-100 mb-3">Whisper Glass UI</h3>
+            <p class="text-stone-400 text-sm leading-relaxed font-light">
+              Multi-layered depth maps and organic blur filters that reflect natural ambient light without overstimulating notifications.
+            </p>
+          </div>
+
+          <!-- Pillar 3 -->
+          <div class="p-8 rounded-3xl glass-card hover:border-gold-400/40 transition-all duration-300 group">
+            <div class="w-12 h-12 rounded-2xl bg-stone-900 border border-stone-750 flex items-center justify-center text-gold-400 mb-6 group-hover:scale-110 transition-transform">
+              <i data-lucide="lock" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-serif text-2xl text-stone-100 mb-3">Sovereign Privacy</h3>
+            <p class="text-stone-400 text-sm leading-relaxed font-light">
+              On-device machine learning models process your reflections without ever transmitting sensitive thoughts to remote servers.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section id="craft" class="py-24 max-w-7xl mx-auto px-5 sm:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <span class="text-xs uppercase tracking-[0.25em] text-gold-400 font-cinzel">Precision Engineering</span>
+          <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl text-stone-100 mt-2">
+            The anatomy of elegance.
+          </h2>
+        </div>
+        <p class="text-stone-400 text-sm max-w-md font-light">
+          Every micro-interaction has been measured against the golden ratio, providing tactile haptics calibrated to feel like heavy cardstock paper.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <!-- Large Card 1 -->
+        <div class="md:col-span-8 p-8 sm:p-10 rounded-3xl glass-card border border-stone-800 relative overflow-hidden group">
+          <div class="relative z-10 max-w-md">
+            <span class="text-[11px] font-mono text-gold-400 uppercase tracking-widest">Haptic Physics Engine</span>
+            <h3 class="font-serif text-2xl sm:text-3xl text-stone-100 mt-2 mb-4">
+              Tactile sensations calibrated to mechanical fountain pens.
+            </h3>
+            <p class="text-stone-400 text-sm leading-relaxed mb-6 font-light">
+              Feel subtle resistance when swiping, distinct spring-back snaps on completion, and deep micro-ticks inspired by luxury chronographs.
+            </p>
+            <div class="inline-flex items-center gap-2 text-xs font-semibold text-gold-300 group-hover:text-gold-400 transition-colors">
+              <span>Explore physics testbed</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </div>
+          </div>
+          <!-- Decorative UI graph background -->
+          <div class="absolute right-0 bottom-0 top-0 w-1/2 opacity-20 pointer-events-none hidden sm:flex items-center justify-center">
+            <div class="w-64 h-64 border border-gold-400/40 rounded-full flex items-center justify-center animate-spin" style="animation-duration: 40s;">
+              <div class="w-44 h-44 border border-dashed border-stone-400/40 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Small Card 2 -->
+        <div class="md:col-span-4 p-8 sm:p-10 rounded-3xl glass-card border border-stone-800 flex flex-col justify-between group">
+          <div>
+            <span class="text-[11px] font-mono text-gold-400 uppercase tracking-widest">Offline Architecture</span>
+            <h3 class="font-serif text-2xl text-stone-100 mt-2 mb-3">100% Unplugged.</h3>
+            <p class="text-stone-400 text-sm font-light leading-relaxed">
+              No internet connection required. Operates with extreme speed in airplane mode or remote monasteries.
+            </p>
+          </div>
+          <div class="pt-8">
+            <div class="flex items-center gap-2 text-stone-300 text-xs font-mono">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              Local SQLite Encrypted Vault
+            </div>
+          </div>
+        </div>
+
+        <!-- Small Card 3 -->
+        <div class="md:col-span-4 p-8 sm:p-10 rounded-3xl glass-card border border-stone-800 flex flex-col justify-between group">
+          <div>
+            <span class="text-[11px] font-mono text-gold-400 uppercase tracking-widest">Dark Spectrum</span>
+            <h3 class="font-serif text-2xl text-stone-100 mt-2 mb-3">True OLED Ebony</h3>
+            <p class="text-stone-400 text-sm font-light leading-relaxed">
+              Engineered with 0-nit black substrates to preserve dark adaptation and melatonin cycles prior to sleep.
+            </p>
+          </div>
+          <div class="pt-8 flex items-center gap-3">
+            <span class="w-6 h-6 rounded-full bg-black border border-stone-700"></span>
+            <span class="w-6 h-6 rounded-full bg-[#171412] border border-stone-700"></span>
+            <span class="w-6 h-6 rounded-full bg-[#2A2421] border border-stone-700"></span>
+            <span class="text-[10px] text-stone-500 font-mono">#000000 Spectrum</span>
+          </div>
+        </div>
+
+        <!-- Large Card 4 -->
+        <div class="md:col-span-8 p-8 sm:p-10 rounded-3xl glass-card border border-stone-800 relative overflow-hidden group">
+          <div class="relative z-10 max-w-lg">
+            <span class="text-[11px] font-mono text-gold-400 uppercase tracking-widest">Auditory Sanctuary</span>
+            <h3 class="font-serif text-2xl sm:text-3xl text-stone-100 mt-2 mb-4">
+              Analog field recordings captured on reel-to-reel tape.
+            </h3>
+            <p class="text-stone-400 text-sm leading-relaxed mb-6 font-light">
+              Includes 32 uncompressed acoustic atmospheres: Scottish rainfall on leaded glass, 18th-century library fires, and dawn at Kyoto courtyards.
+            </p>
+            <button onclick="triggerToast('Audio preview active: Kyoto Courtyard 432Hz')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-stone-900 border border-stone-750 text-xs font-medium text-stone-200 hover:border-gold-400 transition-colors">
+              <i data-lucide="volume-2" class="w-4 h-4 text-gold-400"></i> Sample 10s Acoustic Clip
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="critique" class="py-24 border-t border-stone-800/80 bg-stone-950/60">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-xs uppercase tracking-[0.25em] text-gold-400 font-cinzel">Critical Acclaim</span>
+          <h2 class="font-serif text-3xl sm:text-4xl text-stone-100 mt-2 font-normal">
+            Beloved by scholars, architects & authors.
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <!-- Review 1 -->
+          <div class="p-8 rounded-3xl bg-stone-900/60 border border-stone-800 relative flex flex-col justify-between">
+            <p class="font-serif text-base text-stone-300 italic leading-relaxed">
+              "In an age of relentless gamification, Aurelius is the rare application that respects the silence between thoughts. It looks and feels like an antique leather ledger on glass."
+            </p>
+            <div class="mt-8 pt-4 border-t border-stone-800 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-stone-800 border border-gold-400/30 flex items-center justify-center font-serif text-sm font-semibold text-gold-300">
+                JL
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-stone-200">Julian L’Estrange</p>
+                <p class="text-[10px] text-stone-500 uppercase tracking-wider">Literary Critic & Essayist</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review 2 -->
+          <div class="p-8 rounded-3xl bg-stone-900/60 border border-stone-800 relative flex flex-col justify-between">
+            <p class="font-serif text-base text-stone-300 italic leading-relaxed">
+              "The typographic kerning alone makes every other app feel uncalibrated. Aurelius has replaced both my physical journal and my focus timers without feeling cluttered."
+            </p>
+            <div class="mt-8 pt-4 border-t border-stone-800 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-stone-800 border border-gold-400/30 flex items-center justify-center font-serif text-sm font-semibold text-gold-300">
+                SC
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-stone-200">Seraphina Chen</p>
+                <p class="text-[10px] text-stone-500 uppercase tracking-wider">Principal Architect, Studio Chen</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review 3 -->
+          <div class="p-8 rounded-3xl bg-stone-900/60 border border-stone-800 relative flex flex-col justify-between">
+            <p class="font-serif text-base text-stone-300 italic leading-relaxed">
+              "The dark mode isn't just an inversion of white; it's a deeply considered palette of charcoal, amber, and gold. It has changed my dawn routine permanently."
+            </p>
+            <div class="mt-8 pt-4 border-t border-stone-800 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-stone-800 border border-gold-400/30 flex items-center justify-center font-serif text-sm font-semibold text-gold-300">
+                DV
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-stone-200">Dr. Vikas Varma</p>
+                <p class="text-[10px] text-stone-500 uppercase tracking-wider">Neuroscientist & Author</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section id="download" class="py-24 relative overflow-hidden">
+      <!-- Glow ambient ring -->
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div class="w-[500px] h-[500px] rounded-full bg-gold-400/10 blur-[120px]"></div>
+      </div>
+
+      <div class="max-w-5xl mx-auto px-5 sm:px-8 relative z-10 text-center">
+        <div class="p-10 sm:p-16 rounded-[40px] bg-gradient-to-b from-stone-900/90 via-stone-950 to-stone-950 border border-gold-400/30 shadow-2xl">
+          
+          <span class="text-xs uppercase tracking-[0.3em] text-gold-400 font-cinzel">Begin The Journey</span>
+          
+          <h2 class="font-serif text-3xl sm:text-5xl md:text-6xl text-stone-100 font-normal mt-4 mb-6 leading-tight">
+            Claim your personal <br/><span class="italic text-gold-300">digital sanctuary.</span>
+          </h2>
+          
+          <p class="text-stone-400 text-sm sm:text-base max-w-xl mx-auto mb-10 font-light">
+            One perpetual license or quiet annual patronage. No deceptive subscriptions, no advertisements, and zero corporate telemetry.
+          </p>
+
+          <!-- Store Buttons in CTA -->
+          <div class="flex flex-wrap justify-center items-center gap-4">
+            <button onclick="triggerToast('Downloading Aurelius for iOS (App Store)...')" class="px-8 py-4 rounded-2xl bg-gold-400 hover:bg-gold-300 text-stone-950 font-semibold tracking-wide text-sm transition-all transform hover:-translate-y-0.5 shadow-xl flex items-center gap-3">
+              <i data-lucide="apple" class="w-5 h-5"></i>
+              <span>Download for iOS & iPadOS</span>
+            </button>
+
+            <button onclick="triggerToast('Downloading Aurelius for Android (Play Store)...')" class="px-8 py-4 rounded-2xl bg-stone-900 hover:bg-stone-850 text-stone-200 border border-stone-700/80 font-semibold tracking-wide text-sm transition-all transform hover:-translate-y-0.5 shadow-xl flex items-center gap-3">
+              <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+              <span>Download for Android</span>
+            </button>
+          </div>
+
+          <div class="mt-8 flex items-center justify-center gap-6 text-xs text-stone-500">
+            <span>Requires iOS 17+ or Android 14+</span>
+            <span>•</span>
+            <span>Family Sharing Supported</span>
+            <span>•</span>
+            <span>68 MB Download</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-12 border-t border-stone-800/80 bg-obsidian text-stone-500 text-xs">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+      
+      <div class="flex items-center gap-3">
+        <span class="font-serif tracking-[0.2em] font-semibold text-stone-200">AURELIUS</span>
+        <span class="text-stone-700">|</span>
+        <span>© 2026 Aurelius Laboratory Corp. All rights reserved.</span>
+      </div>
+
+      <div class="flex items-center space-x-6">
+        <a href="#" onclick="triggerToast('Displaying Privacy Creed')" class="hover:text-gold-400 transition-colors">Privacy Creed</a>
+        <a href="#" onclick="triggerToast('Displaying Manifesto')" class="hover:text-gold-400 transition-colors">Manifesto</a>
+        <a href="#" onclick="triggerToast('Displaying Typography Colophon')" class="hover:text-gold-400 transition-colors">Colophon</a>
+        <a href="#" onclick="triggerToast('Opening Support Desk')" class="hover:text-gold-400 transition-colors">Support</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Mobile Navigation Drawer Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Interactive Screen Switcher for Phone Mockup
+    function switchScreen(screenName) {
+      const screens = ['journal', 'cadence', 'sanctuary'];
+      
+      screens.forEach(screen => {
+        const el = document.getElementById(`screen-${screen}`);
+        const tab = document.getElementById(`tab-${screen}`);
+        
+        if (screen === screenName) {
+          // Show active screen
+          el.classList.remove('opacity-0', 'translate-y-6', 'pointer-events-none');
+          el.classList.add('opacity-100', 'translate-y-0');
+          
+          // Style active tab
+          tab.classList.remove('text-stone-400');
+          tab.classList.add('text-stone-200', 'bg-stone-800', 'font-semibold', 'shadow');
+        } else {
+          // Hide inactive screen
+          el.classList.add('opacity-0', 'translate-y-6', 'pointer-events-none');
+          el.classList.remove('opacity-100', 'translate-y-0');
+          
+          // Style inactive tab
+          tab.classList.remove('text-stone-200', 'bg-stone-800', 'font-semibold', 'shadow');
+          tab.classList.add('text-stone-400');
+        }
+      });
+      // Re-trigger icon rendering if needed
+      lucide.createIcons();
+    }
+
+    // Interactive Journal Entry Append Feature
+    const reflectionsPool = [
+      '"Quiet the tempest within; the harbor is your own mind."',
+      '"To live happily is an inward power of the soul."',
+      '"Receive wealth without arrogance; surrender it without hesitation."',
+      '"Waste no more time arguing what a good man should be. Be one."',
+      '"Do every act of your life as though it were the last."'
+    ];
+    let reflectionIndex = 0;
+
+    function stampThought() {
+      const textElem = document.getElementById('interactiveText');
+      reflectionIndex = (reflectionIndex + 1) % reflectionsPool.length;
+      textElem.textContent = reflectionsPool[reflectionIndex];
+      triggerToast('Appended stoic thought to current entry');
+    }
+
+    // Cadence Timer Toggle Simulation
+    let timerRunning = false;
+    let timerInterval = null;
+    let secondsLeft = 35 * 60;
+
+    function togglePhoneTimer() {
+      const btn = document.getElementById('timerControlBtn');
+      const timerDisplay = document.getElementById('mockTimerDisplay');
+      
+      if (!timerRunning) {
+        timerRunning = true;
+        btn.textContent = 'Pause Cadence';
+        btn.classList.remove('bg-gold-400', 'text-black');
+        btn.classList.add('bg-stone-800', 'text-gold-300', 'border', 'border-gold-400/40');
+        triggerToast('Deep work timer initiated (432Hz)');
+
+        timerInterval = setInterval(() => {
+          if (secondsLeft > 0) {
+            secondsLeft--;
+            const mins = Math.floor(secondsLeft / 60);
+            const secs = secondsLeft % 60;
+            timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+          }
+        }, 1000);
+      } else {
+        timerRunning = false;
+        clearInterval(timerInterval);
+        btn.textContent = 'Resume Cadence';
+        btn.classList.add('bg-gold-400', 'text-black');
+        btn.classList.remove('bg-stone-800', 'text-gold-300', 'border', 'border-gold-400/40');
+        triggerToast('Cadence paused');
+      }
+    }
+
+    // Keep Phone Time Up to Date
+    function updateClock() {
+      const now = new Date();
+      const hrs = now.getHours().toString().padStart(2, '0');
+      const mins = now.getMinutes().toString().padStart(2, '0');
+      const clockEl = document.getElementById('phoneClock');
+      if (clockEl) clockEl.textContent = `${hrs}:${mins}`;
+    }
+    setInterval(updateClock, 10000);
+    updateClock();
+
+    // Universal Non-Alert Toast Notification
+    let toastTimeout;
+    function triggerToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      toastMessage.textContent = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3200);
+    }
+  </script>
+</body>
+</html>

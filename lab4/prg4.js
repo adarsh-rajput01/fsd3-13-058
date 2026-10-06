@@ -64,7 +64,7 @@ app.get("/api/products/query", (req, res) => {
 });
 
 
-app.get("/api/products/:productID", (req, res) => {
+app.get("/api/products/:id", (req, res) => {
   const{id} = req.params;
   const p = products.find((item) => item.id === Number(id));
   if(p)
@@ -72,6 +72,25 @@ app.get("/api/products/:productID", (req, res) => {
   else 
     res.status(404).json({status: false, msg: `Product not found: ${id}`});
   
+});
+
+app.get("/api/products/:id/reviews",(req, res) => {
+    res.send("return all reviews for a product");
+})
+
+app.get("/api/products/:id/reviews/:revid",(req, res) => {
+    const {id, revid} = req.params;
+    const prodcut = products.find((item) => item.id === Number(id));
+    if(!product) {
+        res.send(`Product not found: ${id}`);
+        return;
+    }
+    reviews = product.reviews.map((item) => item.id === Number(revid));
+    if(!reviews) {
+        res.send(`invalid review id: ${revid} for product id ${id}`);
+        return;
+    }
+    return res.status(200).send(review);
 });
 
 

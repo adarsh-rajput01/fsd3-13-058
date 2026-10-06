@@ -22,6 +22,47 @@ app.get("/api/products", (req, res) => {
     });
 });
 
+//Query String / request query must be before req parameters or dynamic url
+
+app.get("/api/products/query", (req, res) => {
+
+    const { search, limit } = req.query;
+    console.log("search: ", search);
+    console.log("limit: ", limit);
+    let sortedProducts = [...products];  // copy all products
+
+    if(mp) {
+        sortedProducts = sortedProducts.filter((item) =>
+            item.price <= Number(mp)
+    )
+}
+
+
+
+
+
+    if(search) {
+        sortedProducts = sortedProducts.filter((item) => 
+            item.name.toLowerCase().startsWith(search.toLowerCase()),
+    );
+
+}
+
+    if(limit) {
+        sortedProducts = sortedProducts.slice(0, Number(limit));
+    }
+     if (sortedProducts.length < 1) {
+        res
+        .status(200)
+        .json({"data":[], msg: "No products matched your search"});
+     }
+     else{
+        res
+        .status(200)
+        .json({count: sortedProducts.length, data: sortedProducts});
+     }
+});
+
 
 app.get("/api/products/:productID", (req, res) => {
   const{id} = req.params;
@@ -32,6 +73,8 @@ app.get("/api/products/:productID", (req, res) => {
     res.status(404).json({status: false, msg: `Product not found: ${id}`});
   
 });
+
+
 
 
 app.use((req, res) => {

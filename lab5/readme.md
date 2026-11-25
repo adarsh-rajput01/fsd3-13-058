@@ -18,3 +18,11 @@
 - it must return html
 - most be closed at the calling time
 - it can be used anywhere and anytime
+
+## React Componenets 
+ - any web app is build by different componenets 
+ - it is special type of js function that must return html contents 
+ - It may call user defined html tags 
+ - it must be called inside angle <>
+ - must be closed </>
+ - the first char must be capital letter 
